@@ -1,22 +1,20 @@
 import numpy as np
 from scipy.optimize import linprog
 
-# Приведение задачи к стандартной форме
-c = [-1, -1, 0, 0]  # коэффициенты целевой функции (минимизируем)
+c = [-1, -1, 0, 0]  # коэффициенты целевой функции 
 A_eq = [[1, -1, -1, 0], [1, -2, 0, -1]]  # коэффициенты при переменных в уравнениях
-b_eq = [1, 2]  # правая часть уравнений
+b_eq = [1, 2]  
 bounds = [(0, None), (0, None), (0, None), (0, None)]  # границы переменных
 
 # Преобразование A_eq к двумерному массиву
 A_eq = np.array(A_eq)
 
-# Решение задачи линейного программирования
 res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds)
 
 print("Решение задачи ЛП:")
 print(res)
 
-# Найдем все базовые допустимые решения
+#  базовые допустимые решения
 basic_feasible_solutions = []
 
 for i in range(4):
@@ -46,7 +44,7 @@ print("\nВсе базовые допустимые решения:")
 for bfs in basic_feasible_solutions:
     print(bfs)
 
-# Найдем решение, максимизирующее целевую функцию
+# максимизирующее целевую функцию
 min_z = float('inf')
 optimal_solution = None
 for bfs in basic_feasible_solutions:
