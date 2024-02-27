@@ -63,7 +63,7 @@ def search(
                         indexes_full
                     )
                 )
-
+                
                 print(f'{indexes}: x = {x} является базовым допустим решением')
                 print('---\n')
     else:
