@@ -1,6 +1,9 @@
-from numpy import array, ndarray, double, uint32
+from numpy import array, zeros, concatenate, ndarray, double, uint32
 from numpy.linalg import det, solve
-from pyparsing import List
+from typing import List
+from modules.utils import expand_list_to
+from modules.matrix import sort_vector
+
 
 def generate_feasable_set(A: List[List[double]], b: List[double]) -> List[ndarray[double]]:
     n = len(b)
@@ -33,14 +36,13 @@ def search(
             d.append(A[j].copy())
 
         B = array(d)
-        B.transpose()
 
         if abs(det(B)) < 10**-9:
             print(f'{indexes}:')
             print(f'Матрица B = {B} вырождена')
             print('---\n')
         else:
-            x = solve(B, b)
+            x = solve(B.transpose(), b)
             f = True
 
             for k in range(n):
@@ -53,7 +55,16 @@ def search(
                     break
 
             if f:
-                bfs.append(x)
+                indexes_full = expand_list_to(indexes, m)
+                y = zeros(m - n)
+
+                bfs.append(
+                    sort_vector(
+                        concatenate([x, y]),
+                        indexes_full
+                    )
+                )
+                
                 print(f'{indexes}: x = {x} является базовым допустим решением')
                 print('---\n')
     else:
